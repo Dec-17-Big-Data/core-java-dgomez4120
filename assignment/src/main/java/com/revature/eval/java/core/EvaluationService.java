@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class EvaluationService {
 
@@ -151,23 +150,23 @@ public class EvaluationService {
 	public int getScrabbleScore(String string) {
 		char[] stringSplit = (string.toLowerCase()).toCharArray();
 		int scrabbleScore = 0;
-		for(char letter : stringSplit) {
-			if("fhvwy".indexOf(letter) != -1) {	
+		for(int i = 0; i < stringSplit.length; i++) {
+			if(stringSplit[i] == 'f' || stringSplit[i] == 'h' || stringSplit[i] == 'v' || stringSplit[i] == 'w' || stringSplit[i] == 'y') {
 				scrabbleScore += 4;
 			}
-			else if("bcmp".indexOf(letter) != -1) {
+			else if(stringSplit[i] == 'b' || stringSplit[i] == 'c' || stringSplit[i] == 'm' || stringSplit[i] == 'p') {
 				scrabbleScore += 3;
 			}
-			else if("dg".indexOf(letter) != -1) {
+			else if(stringSplit[i] == 'd' || stringSplit[i] == 'g') {
 				scrabbleScore += 2;
 			}
-			else if("jx".indexOf(letter) != -1) {
+			else if(stringSplit[i] == 'j' || stringSplit[i] == 'x') {
 				scrabbleScore += 8;
 			}
-			else if("qz".indexOf(letter) != -1) {
+			else if(stringSplit[i] == 'q' || stringSplit[i] == 'z') {
 				scrabbleScore += 10;
 			}
-			else if(letter == 'k' ) {
+			else if(stringSplit[i] == 'k' ) {
 				scrabbleScore += 5;
 			}
 			else {
@@ -313,20 +312,11 @@ public class EvaluationService {
 			
 			while(start <= end) {
 				int index =  (end+start)/2;
-				int listValue;
-				int value;
-				try {
-					listValue = (int) sortedList.get(index);
-					value = (int) t;
-				}catch(ClassCastException cce) {
-					listValue = Integer.parseInt((String) sortedList.get(index));
-					value = Integer.parseInt((String) t);
-				}
-			
-				if(listValue == value) {
+				
+				if((int)sortedList.get(index) == (int)t) {
 					return index;
 				}
-				if(listValue > value){
+				if((int)sortedList.get(index) > (int)t ){
 					end = index - 1;
 				}else {
 					start = index + 1;
@@ -381,16 +371,14 @@ public class EvaluationService {
 		
 		for(int i = 0; i < stringArray.length; i++) {
 			char[] charArray = stringArray[i].toCharArray();
-			if("bcdfghjklmnprstvwxyz".indexOf(charArray[0]) != -1) {
+			if("bcdfghjklmnpqrstvwxyz".indexOf(charArray[0]) != -1) {
 				int j = 0;
-				while("bcdfghjklmnprstvwxyz".indexOf(charArray[j]) != -1) {
+				while("bcdfghjklmnpqrstvwxyz".indexOf(charArray[j]) != -1) {
 					j++;
 				}
-				stringArray[i] = stringArray[i].substring(j) + stringArray[i].substring(0, j) + "ay";
-			}else if("q".indexOf(charArray[0]) != -1) {
-				stringArray[i] = stringArray[i].substring(2) + stringArray[i].substring(0,2) + "ay";
+				stringArray[i] = stringArray[i].substring(j)+stringArray[i].substring(0, j)+"ay";
 			}else {
-				stringArray[i] = stringArray[i] + "ay";
+				stringArray[i] = stringArray[i]+"ay";
 			}
 		}
 		String pigLatin = String.join(" ", stringArray);
@@ -642,7 +630,8 @@ public class EvaluationService {
 			for(int i = 1; i <= space; i++) {
 				encoded.insert((6*i)-1, " ");
 			}
-			return encoded.toString().trim();
+			System.out.println(encoded);
+			return encoded.toString();
 		}
 
 		/**
@@ -652,30 +641,11 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			String original = string.replaceAll("[^A-Za-z0-9]+", "");
-			StringBuffer decoded = new StringBuffer(original.toLowerCase());
-			StringBuffer alpha = new StringBuffer("abcdefghijklmnopqrstuvwxyz");
-			StringBuffer cipher = new StringBuffer("zyxwvutsrqponmlkjihgfedcba");
-			for(int i = 0; i < decoded.length(); i++) {
-				char letter = decoded.charAt(i);
-				if((int) letter >= 97 && (int) letter <= 122) {
-					for(int j = 0; j < cipher.length(); j++) {
-						if(letter == cipher.charAt(j)) {
-							String decodedLetter = String.valueOf(alpha.charAt(j));
-							decoded.replace(i, i+1, decodedLetter);
-						}
-					}
-				}
-			}
-			
-			return decoded.toString();
+			// TODO Write an implementation for this method declaration
+			return null;
 		}
 	}
 
-	
-	
-	
-	
 	/**
 	 * 15. The ISBN-10 verification process is used to validate book identification
 	 * numbers. These normally contain dashes and look like: 3-598-21508-8
@@ -699,32 +669,10 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isValidIsbn(String string) {
-		string = string.replaceAll("[^0-9X]", "");
-		int productSum = 0;
-		if(string.length() != 10) {
-			return false;
-		}
-		for(int i = 0; i < string.length(); i++) {
-			if(string.charAt(i) == 'X') {
-				productSum += 10;
-			}else {
-				int digit = Character.getNumericValue(string.charAt(i));
-				productSum += (10-i)*digit;
-			}
-		}
-		if(productSum % 11 == 0) {
-			return true;
-		}
+		// TODO Write an implementation for this method declaration
 		return false;
 	}
 
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * 16. Determine if a sentence is a pangram. A pangram (Greek: παν γράμμα, pan
 	 * gramma, "every letter") is a sentence using every letter of the alphabet at
@@ -739,27 +687,10 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		string = string.toLowerCase();
-		StringBuilder alpha = new StringBuilder("abcdefghijklmnopqrstuvwxyz");
-		for(int i = 0; i < string.length(); i++) {
-			for(int j = 0; j < alpha.length(); j++) {
-				if(string.charAt(i) == alpha.charAt(j)) {
-					alpha.deleteCharAt(j);
-				}
-			}
-		}
-		if(alpha.toString().equals("")) {
-			return true;
-		}
+		// TODO Write an implementation for this method declaration
 		return false;
 	}
 
-	
-	
-	
-	
-	
-	
 	/**
 	 * 17. Calculate the moment when someone has lived for 10^9 seconds.
 	 * 
@@ -773,11 +704,6 @@ public class EvaluationService {
 		return null;
 	}
 
-	
-	
-	
-	
-	
 	/**
 	 * 18. Given a number, find the sum of all the unique multiples of particular
 	 * numbers up to but not including that number.
@@ -792,31 +718,10 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		List<Integer> multiples = new ArrayList<>();
-		int j = 0;
-		for(int num : set) {
-			int multiple = num;
-			while(multiple < i) {
-				multiples.add(j, multiple);;
-				multiple += num;
-				j++;
-			}
-		}
-		multiples = multiples.stream().distinct().collect(Collectors.toList());
-		int sumOfMultiples = 0;
-		for(j = 0; j < multiples.size(); j++) {
-			sumOfMultiples += multiples.get(j); 
-		}
-		return sumOfMultiples;
+		// TODO Write an implementation for this method declaration
+		return 0;
 	}
 
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * 19. Given a number determine whether or not it is valid per the Luhn formula.
 	 * 
@@ -854,38 +759,10 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isLuhnValid(String string) {
-		string = string.replaceAll("\\s", "");
-		if(!string.matches("[0-9]+")) {
-			return false;
-		}
-		char[] numArray = string.toCharArray();
-		int digitSum = 0;
-		for(int i = 0; i < numArray.length; i++) {
-			int digit = Character.getNumericValue(numArray[i]);
-			if(i % 2 == 0) {
-				digitSum += digit;
-			}else if((digit * 2) > 9 ) {
-				digitSum += (digit * 2) - 9;
-			}else {
-				digitSum += (digit * 2);
-			}
-		}
-		if(digitSum % 10 == 0) {
-			return true;
-		}
+		// TODO Write an implementation for this method declaration
 		return false;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * 20. Parse and evaluate simple math word problems returning the answer as an
 	 * integer.
@@ -914,40 +791,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		String[] parsed = string.replaceAll("[^a-zA-Z0-9- ]", "").split(" ");
-		List<Integer> values = new ArrayList<>();
-		boolean sumFlag = false;
-		boolean subFlag = false;
-		boolean mulFlag = false;
-		boolean divFlag = false;
-		
-		for(String word : parsed) {
-			try {
-				int value = Integer.parseInt(word);
-				values.add(value);
-			}catch(NumberFormatException nfe) {
-			}
-			
-			if(word.equals("plus")) {
-				sumFlag = true;	
-			}else if(word.equals("minus")) {
-				subFlag = true;
-			}else if(word.equals("multiplied")) {
-				mulFlag = true;
-			}else if(word.equals("divided")) {
-				divFlag = true;
-			}
-		}
-		if(sumFlag) {
-			return values.get(0) + values.get(1);
-		}else if(subFlag) {
-			return values.get(0) - values.get(1);
-		}else if(mulFlag) {
-			return values.get(0) * values.get(1);
-		}else if(divFlag) {
-			return values.get(0) / values.get(1);
-		}
-		
+		// TODO Write an implementation for this method declaration
 		return 0;
 	}
 
