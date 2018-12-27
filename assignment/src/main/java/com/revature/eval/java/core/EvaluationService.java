@@ -424,9 +424,11 @@ public class EvaluationService {
 		boolean flag = false;
 		String[] digitsString = (Integer.toString(input)).split("");
 		int armstrongValue = 0;
+		
 		for(int i = 0; i < digitsString.length; i++) {
 			armstrongValue += Math.pow(Double.valueOf(digitsString[i]), (double) digitsString.length);
 		}
+		
 		if(armstrongValue == input) {
 			flag = true;
 		}
